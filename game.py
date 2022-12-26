@@ -56,6 +56,7 @@ def print_field(apple_pos):
 
 
 while True:
+    print(UP*(MAX_HEIGHT + 1), end=CLEAR)
     apple_pos = update_apple()
     print_field(apple_pos)
     update_snake()
@@ -70,4 +71,4 @@ while True:
                 direction = DIRECTIONS['down']
             case 'd': 
                 direction = DIRECTIONS['right']
-    print(UP*(MAX_HEIGHT + 1), end=CLEAR)
+    
