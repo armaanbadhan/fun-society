@@ -1,6 +1,7 @@
 from random import randint
 from pytimedinput import timedInput
 from os import get_terminal_size
+from colorama import Fore
 
 
 UP = '\033[1A'
@@ -26,6 +27,7 @@ class SnakeGame:
         self.direction = DIRECTIONS['right']
         self.apple_pos = None
         self.eaten = False
+        self.score = 0
         self.update_apple()
 
 
@@ -35,6 +37,10 @@ class SnakeGame:
         if new_head == self.apple_pos:
             self.eaten = True
             self.update_apple()
+            self.score += 1
+        elif new_head[0] in (0, MAX_WIDTH - 1) or new_head[1] in (0, MAX_HEIGHT - 1):
+            print(f"game over you suck, you scored {self.score}")
+            exit()
         else:
             self.snake.pop(-1)
 
@@ -50,14 +56,14 @@ class SnakeGame:
     def print_field(self):
         for cell in CELLS:
             if cell in self.snake:
-                print('S', end='')
+                print(Fore.GREEN + 'S', end='')
             elif cell[0] in (0, MAX_WIDTH - 1) or cell[1] in (0, MAX_HEIGHT - 1):
-                print("#", end='')
+                print(Fore.LIGHTBLUE_EX + "#", end='')
                 if cell[0] == MAX_WIDTH - 1:
                     print('')
             else:
                 if cell == self.apple_pos:
-                    print('a', end='')
+                    print(Fore.RED + 'a', end='')
                 else:
                     print(" ", end='')
 
@@ -66,10 +72,12 @@ class SnakeGame:
 snake = SnakeGame()
 
 while True:
-    print(UP*(MAX_HEIGHT + 2), end=CLEAR)
+    print(UP*(term_size.lines), end=CLEAR)
     snake.print_field()
     snake.update_snake()
-    inp, entered = timedInput('press w/a/s/d to move(q to quit):', timeout=0.3)
+    
+    inp, entered = timedInput(Fore.WHITE + 'press w/a/s/d to move(q to quit):', timeout=0.2, maxLength=1)
+
     if entered:
         match inp:
             case 'w': 
@@ -81,4 +89,5 @@ while True:
             case 'd': 
                 snake.direction = DIRECTIONS['right']
             case 'q':
+                print(f"you scored {snake.score} loser!")
                 exit(0)
