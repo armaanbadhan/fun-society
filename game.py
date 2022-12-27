@@ -77,6 +77,7 @@ while True:
     snake.update_snake()
     
     inp, entered = timedInput(Fore.WHITE + 'press w/a/s/d to move(q to quit):', timeout=0.2, maxLength=1)
+    # if timeout=0.2 throws an error, change type of timeout in pytimedinput.py from int to float in lines 14 & 90 ez
 
     if entered:
         match inp:
