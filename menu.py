@@ -3,6 +3,8 @@ import os
 import msvcrt
 from sys import stdout
 
+from snake import play_snake
+
 print = stdout.write
 
 # TODO: hide cursor
@@ -137,6 +139,12 @@ while True:
         point_to_x = (point_to_x + 1) % 4
     elif char == '\r':
         break
+
+
+if (point_to_x, point_to_y) == (0, 0):
+    play_snake()
+else:
+    pass
 
 
 os.system('cls')

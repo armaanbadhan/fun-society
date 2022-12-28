@@ -3,6 +3,10 @@ trying to make some retro games in terminal only
 
 # to play:
 
+`git clone https://github.com/armaanbadhan/fun-society.git`
+
+`cd fun-society`
+
 `pip install -r requirements.txt`
 
 `python menu.py`
