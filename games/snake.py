@@ -8,8 +8,8 @@ UP = '\033[1A'
 CLEAR = '\x1b[2K'
 
 term_size = get_terminal_size()
-MAX_WIDTH = term_size.columns
-MAX_HEIGHT = term_size.lines - 1
+MAX_WIDTH = min(term_size.columns, 50)
+MAX_HEIGHT = min(term_size.lines - 1, 10)
 
 CELLS = [(col, row) for row in range(MAX_HEIGHT) for col in range(MAX_WIDTH)]
 
@@ -38,11 +38,13 @@ class SnakeGame:
             self.eaten = True
             self.update_apple()
             self.score += 1
+            return True
         elif new_head[0] in (0, MAX_WIDTH - 1) or new_head[1] in (0, MAX_HEIGHT - 1):
             print(f"game over you suck, you scored {self.score}")
-            exit()
+            return False
         else:
             self.snake.pop(-1)
+            return True
 
 
     def update_apple(self):
@@ -75,7 +77,8 @@ def play_snake():
     while True:
         print(UP*(term_size.lines), end=CLEAR)
         snake.print_field()
-        snake.update_snake()
+        if not snake.update_snake():
+            return snake.score
         
         inp, entered = timedInput(Fore.WHITE + 'press w/a/s/d to move(q to quit):', timeout=0.2, maxLength=1)
         # if timeout=0.2 throws an error, change type of timeout in pytimedinput.py from int to float in lines 14 & 90 ez

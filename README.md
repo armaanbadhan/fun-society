@@ -1,4 +1,4 @@
-trying to make some retro games in terminal only
+trying to make some retro games in terminal only, tested on powershell only
 
 
 # to play:

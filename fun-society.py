@@ -2,10 +2,12 @@ from os import get_terminal_size
 import os
 import msvcrt  # check os then import msvcrt/getch
 from sys import stdout
+from gamer import play_games
 
-from games.snake import play_snake
 
 print = stdout.write
+# TODO: impliment own print function which takes in the coordinates where to print
+
 
 # TODO: hide cursor
 # ref: https://superuser.com/questions/1496322/how-do-i-remove-hide-the-cursor-the-blinking-underscore-character-in-cmd-exe
@@ -58,6 +60,7 @@ create an anonymous safehouse.
 """
 
 
+# TODO: store game_name, game function, arrow params somethere
 ARROW_POSITION = {   # (call param) : (down, right)
     (0, 0): (22, 16),
     (0, 1): (22, 42),
@@ -91,22 +94,10 @@ class Arrow:
             print(HOME + DOWN*posi[0] + FORWARD*posi[1] + RESET_COLOR + self.eraser + HOME)
 
 
-def play_games(x, y):
-    os.system('cls')
-    if x == 3:
-        print("thanks for playing")
-        exit()
-    if (x, y) == (0, 0):
-        score = play_snake()
-        show_menu()
-    else:
-        print("game will be implimented soon")
-        exit()
-
 
 # TODO: border around the whole thing?
 def show_menu():
-    print(RESET + '\n\n')
+    print(RESET + HOME + '\n\n')
 
     for ban in BANNER:
         print(RED + "        " + ban  + '\n')
@@ -137,7 +128,13 @@ def show_menu():
         elif char == 's':
             point_to_x = (point_to_x + 1) % 4
         elif char == '\r':
+            os.system('cls')
+            if point_to_x == 3:
+                print(HOME + 'THANKS FOR PLAYING')
+                exit()
             play_games(point_to_x, point_to_y)
+            break
 
 
-show_menu()
+while True:
+    show_menu()
