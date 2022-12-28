@@ -1,45 +1,12 @@
-from os import get_terminal_size
 import os
 import msvcrt  # check os then import msvcrt/getch
-from sys import stdout
-from gamer import play_games
+from util.cursor import Cursor
 
-
-print = stdout.write
-# TODO: impliment own print function which takes in the coordinates where to print
-
-
-# TODO: hide cursor
-# ref: https://superuser.com/questions/1496322/how-do-i-remove-hide-the-cursor-the-blinking-underscore-character-in-cmd-exe
-
-# TODO: make cursor class
-# ANSI Characters
-RESET = "\033c"
-HOME = "\r" + "\033[;H" + "\r"
-
-UP =      '\033[1A'
-DOWN =    '\033[1B'
-FORWARD = '\033[1C'
-BACK =    '\033[1D'
-
-CLEAR = '\033[2K'
-GO_TO_START_OF_LINE = "\r"
-# make sure to use \r after if using at start of a line
-
-UNDERLINE = "\033[4m"
-RED = '\033[0;31m'
-LIGHT_CYAN = "\033[1;36m"
-LIGHT_BLUE = '\033[1;34m'
-RESET_COLOR = '\033[0m'
-
+from games.snake import play_snake
 
 os.system('mode con: cols=100 lines=27')
 
-
-term_size = get_terminal_size()
-
-MAX_WIDTH = term_size.columns
-MAX_HEIGHT = term_size.lines
+cur = Cursor()
 
 BANNER = [
     "███████╗██╗   ██╗███╗   ██╗     ███████╗ ██████╗  ██████╗██╗███████╗████████╗██╗   ██╗",
@@ -76,8 +43,8 @@ ARROW_POSITION = {   # (call param) : (down, right)
 
 class Arrow:
     def __init__(self) -> None:
-        self.arrow  = "-->"
-        self.eraser = "   "
+        self.arrow  = "-->\r"
+        self.eraser = "   \r"
         self.position = None
 
     
@@ -85,34 +52,46 @@ class Arrow:
         self.erase()
         self.position = pos
         posi = ARROW_POSITION[pos]
-        print(HOME + DOWN*posi[0] + FORWARD*posi[1] + RESET_COLOR + self.arrow + HOME)
+        cur.tprint(self.arrow, pos_x=posi[1], pos_y=posi[0])
 
     
     def erase(self):
         if self.position is not None:
             posi = ARROW_POSITION[self.position]
-            print(HOME + DOWN*posi[0] + FORWARD*posi[1] + RESET_COLOR + self.eraser + HOME)
+            cur.tprint(self.eraser, pos_x=posi[1], pos_y=posi[0])
 
+
+# TODO: show score on this and "press this to comtinue"
+def play_games(x, y):
+    if (x, y) == (0, 0):
+        score = play_snake()
+        return
+    else:
+        cur.tprint("game will be implimented soon")
+        exit()
 
 
 # TODO: border around the whole thing?
 def show_menu():
-    print(RESET + HOME + '\n\n')
+    cur.clear_all()
+    cur.tprint("\n\n", pos_x=0, pos_y=0)
 
     for ban in BANNER:
-        print(RED + "        " + ban  + '\n')
+        cur.tprint("        " + ban + '\n', color=cur.RED)
 
-    print('\n' + INFO + '\n\n')
+    cur.tprint('\n' + INFO + '\n\n', color=cur.LIGHT_RED)
 
-    print("***Welcome to Fun-Society***\n\n")       # TODO: make it blink somehow
+    cur.tprint(" "*30)
+    cur.tprint("***Welcome to Fun-Society***\n\n", negative=True, blink=True, color=cur.GREEN)
 
-    print(LIGHT_CYAN + GO_TO_START_OF_LINE + "choose the game you wanna play(w/a/s/d/enter):\n" + LIGHT_BLUE)
+    cur.tprint("choose the game you wanna play(w/a/s/d/enter):\n", color=cur.BLUE)
 
-    print(" "*20 + "snake " + " "*20 + "pong  " + '\n')
-    print(" "*20 + "game 3" + " "*20 + "game 4" + '\n')
-    print(" "*20 + "game 5" + " "*20 + "game 6" + '\n\n')
+    cur.tprint(" "*20 + "snake " + " "*20 + "pong  " + '\n', color=cur.LIGHT_CYAN)
+    cur.tprint(" "*20 + "game 3" + " "*20 + "game 4" + '\n', color=cur.LIGHT_CYAN)
+    cur.tprint(" "*20 + "game 5" + " "*20 + "game 6" + '\n\n', color=cur.LIGHT_CYAN)
 
-    print(" "*20 + "      " + " "*20 + UNDERLINE + "exit")
+    cur.tprint(" "*20 + "      " + " "*20)
+    cur.tprint("exit", underline=True, color=cur.LIGHT_CYAN)
 
     arrow = Arrow()
     point_to_x, point_to_y = 0, 0
@@ -130,7 +109,7 @@ def show_menu():
         elif char == '\r':
             os.system('cls')
             if point_to_x == 3:
-                print(HOME + 'THANKS FOR PLAYING')
+                cur.tprint('THANKS FOR PLAYING')
                 exit()
             play_games(point_to_x, point_to_y)
             break
