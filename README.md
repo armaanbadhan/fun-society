@@ -9,7 +9,7 @@ trying to make some retro games in terminal only
 
 `pip install -r requirements.txt`
 
-`python menu.py`
+`python fun-society.py`
 
 
 
