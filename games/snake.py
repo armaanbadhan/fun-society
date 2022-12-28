@@ -94,3 +94,6 @@ def play_snake():
                     print(f"you scored {snake.score} loser!")
                     return snake.score
 
+
+if __name__ == "__main__":
+    play_snake()
