@@ -4,9 +4,11 @@ from util.cursor import Cursor
 
 from games.snake import play_snake
 
-os.system('mode con: cols=100 lines=27')
+os.system('mode con: cols=100 lines=28')
 
 cur = Cursor()
+print = cur.tprint
+
 
 BANNER = [
     "███████╗██╗   ██╗███╗   ██╗     ███████╗ ██████╗  ██████╗██╗███████╗████████╗██╗   ██╗",
@@ -16,6 +18,7 @@ BANNER = [
     "██║     ╚██████╔╝██║ ╚████║     ███████║╚██████╔╝╚██████╗██║███████╗   ██║      ██║   ",
     "╚═╝      ╚═════╝ ╚═╝  ╚═══╝     ╚══════╝ ╚═════╝  ╚═════╝╚═╝╚══════╝   ╚═╝      ╚═╝   ",
 ]
+# TODO: change info xd
 INFO = """
 Ned Bosham reopened the arcade under the name "Fun Society Amusement, LLC". In August 2013, Harold 
 Bosham pressed his father to sell the property; when that failed, Harold stole his twin brother's 
@@ -52,46 +55,49 @@ class Arrow:
         self.erase()
         self.position = pos
         posi = ARROW_POSITION[pos]
-        cur.tprint(self.arrow, pos_x=posi[1], pos_y=posi[0])
+        print(self.arrow, pos_x=posi[1], pos_y=posi[0])
 
     
     def erase(self):
         if self.position is not None:
             posi = ARROW_POSITION[self.position]
-            cur.tprint(self.eraser, pos_x=posi[1], pos_y=posi[0])
+            print(self.eraser, pos_x=posi[1], pos_y=posi[0])
 
 
 # TODO: show score on this and "press this to comtinue"
 def play_games(x, y):
     if (x, y) == (0, 0):
         score = play_snake()
+        cur.clear_all()
+        print(f"YOU SCORED {score}! \npress enter to continue")
+        input()
         return
     else:
-        cur.tprint("game will be implimented soon")
+        print("game will be implimented soon")
         exit()
 
 
 # TODO: border around the whole thing?
 def show_menu():
     cur.clear_all()
-    cur.tprint("\n\n", pos_x=0, pos_y=0)
+    print("\n\n", pos_x=0, pos_y=0)
 
     for ban in BANNER:
-        cur.tprint("        " + ban + '\n', color=cur.RED)
+        print("        " + ban + '\n', color=cur.RED)
 
-    cur.tprint('\n' + INFO + '\n\n', color=cur.LIGHT_RED)
+    print('\n' + INFO + '\n\n', color=cur.LIGHT_RED)
 
-    cur.tprint(" "*30)
-    cur.tprint("***Welcome to Fun-Society***\n\n", negative=True, blink=True, color=cur.GREEN)
+    print(" "*30)
+    print("***Welcome to Fun-Society***\n\n", negative=True, blink=True, color=cur.GREEN)
 
-    cur.tprint("choose the game you wanna play(w/a/s/d/enter):\n", color=cur.BLUE)
+    print("choose the game you wanna play(w/a/s/d/enter):\n", color=cur.BLUE)
 
-    cur.tprint(" "*20 + "snake " + " "*20 + "pong  " + '\n', color=cur.LIGHT_CYAN)
-    cur.tprint(" "*20 + "game 3" + " "*20 + "game 4" + '\n', color=cur.LIGHT_CYAN)
-    cur.tprint(" "*20 + "game 5" + " "*20 + "game 6" + '\n\n', color=cur.LIGHT_CYAN)
+    print(" "*20 + "snake " + " "*20 + "pong  " + '\n', color=cur.LIGHT_CYAN)
+    print(" "*20 + "game 3" + " "*20 + "game 4" + '\n', color=cur.LIGHT_CYAN)
+    print(" "*20 + "game 5" + " "*20 + "game 6" + '\n\n', color=cur.LIGHT_CYAN)
 
-    cur.tprint(" "*20 + "      " + " "*20)
-    cur.tprint("exit", underline=True, color=cur.LIGHT_CYAN)
+    print(" "*20 + "      " + " "*20)
+    print("exit", underline=True, color=cur.LIGHT_CYAN)
 
     arrow = Arrow()
     point_to_x, point_to_y = 0, 0
@@ -109,7 +115,7 @@ def show_menu():
         elif char == '\r':
             os.system('cls')
             if point_to_x == 3:
-                cur.tprint('THANKS FOR PLAYING')
+                print('THANKS FOR PLAYING')
                 exit()
             play_games(point_to_x, point_to_y)
             break

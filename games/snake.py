@@ -40,7 +40,6 @@ class SnakeGame:
             self.score += 1
             return True
         elif new_head[0] in (0, MAX_WIDTH - 1) or new_head[1] in (0, MAX_HEIGHT - 1):
-            print(f"game over you suck, you scored {self.score}")
             return False
         else:
             self.snake.pop(-1)
@@ -69,34 +68,38 @@ class SnakeGame:
                 else:
                     print(" ", end='')
 
+    def play(self):
+        while True:
+            print(UP*(term_size.lines), end=CLEAR)
+            self.print_field()
+            if not self.update_snake():
+                return self.score
+            
+            inp, entered = timedInput(Fore.WHITE + 'press w/a/s/d to move(q to quit):', timeout=0.2, maxLength=1)
+            # if timeout=0.2 throws an error, change type of timeout in pytimedinput.py from int to float in lines 14 & 90 ez
+
+            if entered:
+                match inp:
+                    case 'w': 
+                        self.direction = DIRECTIONS['up']
+                    case 'a': 
+                        self.direction = DIRECTIONS['left']
+                    case 's': 
+                        self.direction = DIRECTIONS['down']
+                    case 'd': 
+                        self.direction = DIRECTIONS['right']
+                    case 'q':
+                        return self.score
 
 
 def play_snake():
     snake = SnakeGame()
+    score = snake.play()
+    return score
 
-    while True:
-        print(UP*(term_size.lines), end=CLEAR)
-        snake.print_field()
-        if not snake.update_snake():
-            return snake.score
-        
-        inp, entered = timedInput(Fore.WHITE + 'press w/a/s/d to move(q to quit):', timeout=0.2, maxLength=1)
-        # if timeout=0.2 throws an error, change type of timeout in pytimedinput.py from int to float in lines 14 & 90 ez
-
-        if entered:
-            match inp:
-                case 'w': 
-                    snake.direction = DIRECTIONS['up']
-                case 'a': 
-                    snake.direction = DIRECTIONS['left']
-                case 's': 
-                    snake.direction = DIRECTIONS['down']
-                case 'd': 
-                    snake.direction = DIRECTIONS['right']
-                case 'q':
-                    print(f"you scored {snake.score} loser!")
-                    return snake.score
 
 
 if __name__ == "__main__":
-    play_snake()
+    score = play_snake()
+    print(f"you scored {score}")
+
