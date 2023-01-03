@@ -79,16 +79,15 @@ class SnakeGame:
             # if timeout=0.2 throws an error, change type of timeout in pytimedinput.py from int to float in lines 14 & 90 ez
 
             if entered:
-                match inp:
-                    case 'w': 
+                    if inp == 'w': 
                         self.direction = DIRECTIONS['up']
-                    case 'a': 
+                    if inp ==  'a': 
                         self.direction = DIRECTIONS['left']
-                    case 's': 
+                    if inp ==  's': 
                         self.direction = DIRECTIONS['down']
-                    case 'd': 
+                    if inp ==  'd': 
                         self.direction = DIRECTIONS['right']
-                    case 'q':
+                    if inp ==  'q':
                         return self.score
 
 
