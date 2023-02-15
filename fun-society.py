@@ -7,8 +7,8 @@ from games.snake import play_snake
 os.system('mode con: cols=100 lines=28')
 
 cur = Cursor()
+# noinspection PyShadowingBuiltins
 print = cur.tprint
-
 
 BANNER = [
     "███████╗██╗   ██╗███╗   ██╗     ███████╗ ██████╗  ██████╗██╗███████╗████████╗██╗   ██╗",
@@ -29,9 +29,8 @@ urged him to burn it down; instead, Romero took advantage of the building's lega
 create an anonymous safehouse.
 """
 
-
 # TODO: store game_name, game function, arrow params somethere
-ARROW_POSITION = {   # (call param) : (down, right)
+ARROW_POSITION = {  # (call param) : (down, right)
     (0, 0): (22, 16),
     (0, 1): (22, 42),
     (1, 0): (23, 16),
@@ -43,28 +42,25 @@ ARROW_POSITION = {   # (call param) : (down, right)
 }
 
 
-
 class Arrow:
     def __init__(self) -> None:
-        self.arrow  = "-->\r"
+        self.arrow = "-->\r"
         self.eraser = "   \r"
         self.position = None
 
-    
     def display(self, pos):
         self.erase()
         self.position = pos
         posi = ARROW_POSITION[pos]
         print(self.arrow, pos_x=posi[1], pos_y=posi[0])
 
-    
     def erase(self):
         if self.position is not None:
             posi = ARROW_POSITION[self.position]
             print(self.eraser, pos_x=posi[1], pos_y=posi[0])
 
 
-# TODO: show score on this and "press this to comtinue"
+# TODO: show score on this and "press this to continue"
 def play_games(x, y):
     if (x, y) == (0, 0):
         score = play_snake()
@@ -73,7 +69,7 @@ def play_games(x, y):
         input()
         return
     else:
-        print("game will be implimented soon")
+        print("game will be implemented soon")
         exit()
 
 
@@ -87,16 +83,16 @@ def show_menu():
 
     print('\n' + INFO + '\n\n', color=cur.LIGHT_RED)
 
-    print(" "*30)
+    print(" " * 30)
     print("***Welcome to Fun-Society***\n\n", negative=True, blink=True, color=cur.GREEN)
 
     print("choose the game you wanna play(w/a/s/d/enter):\n", color=cur.BLUE)
 
-    print(" "*20 + "snake " + " "*20 + "pong  " + '\n', color=cur.LIGHT_CYAN)
-    print(" "*20 + "game 3" + " "*20 + "game 4" + '\n', color=cur.LIGHT_CYAN)
-    print(" "*20 + "game 5" + " "*20 + "game 6" + '\n\n', color=cur.LIGHT_CYAN)
+    print(" " * 20 + "snake " + " " * 20 + "pong  " + '\n', color=cur.LIGHT_CYAN)
+    print(" " * 20 + "game 3" + " " * 20 + "game 4" + '\n', color=cur.LIGHT_CYAN)
+    print(" " * 20 + "game 5" + " " * 20 + "game 6" + '\n\n', color=cur.LIGHT_CYAN)
 
-    print(" "*20 + "      " + " "*20)
+    print(" " * 20 + "      " + " " * 20)
     print("exit", underline=True, color=cur.LIGHT_CYAN)
 
     arrow = Arrow()
