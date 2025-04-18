@@ -66,6 +66,6 @@ def play_pong():
 
 
 if __name__ == "__main__":
-    os.system(f'mode con: cols={MAX_WIDTH} lines={MAX_HEIGHT}')
+#    os.system(f'mode con: cols={MAX_WIDTH} lines={MAX_HEIGHT}')
     score = play_pong()
     print(f"you scored {score}!")

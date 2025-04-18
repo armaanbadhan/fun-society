@@ -2,7 +2,7 @@
 game
 """
 import os
-import msvcrt  # check os then import msvcrt/getch
+import getch 
 import sys
 
 from util.cursor import AnsiCodes
@@ -106,7 +106,7 @@ def show_menu():
 
     while True:
         arrow.display((point_to_x, point_to_y))
-        char = msvcrt.getch().decode("utf-8")
+        char = getch.getch()
 
         if char in ('a', 'd'):
             point_to_y = (point_to_y + 1) % 2
@@ -114,8 +114,8 @@ def show_menu():
             point_to_x = (point_to_x + 3) % 4
         elif char == 's':
             point_to_x = (point_to_x + 1) % 4
-        elif char == '\r':
-            os.system('cls')
+        elif char == '\n':
+            os.system('clear')
             if point_to_x == 3:
                 print('THANKS FOR PLAYING')
                 sys.exit()
